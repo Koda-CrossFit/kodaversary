@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>3 Year Kodaversary Gift | Koda CrossFit Iron View</title>
+<meta name="description" content="Happy 3 years at Koda Iron View! Pick your anniversary hoodie, crewneck or long sleeve, its color, and the print color for the KX mountains logo.">
+<meta property="og:title" content="Pick your 3 Year Kodaversary gift">
+<meta property="og:description" content="Hoodie, crewneck or long sleeve with the KX mountains logo, in the colors you pick.">
+<link rel="icon" type="image/png" href="assets/logo-mask.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0e1a2b; --navy-2: #17263c; --ink: #141a22; --muted: #5d6673; --line: #dfe3e8;
+    --paper: #f6f7f9; --card: #ffffff; --accent: #c4a46b; --error: #b3261e; --ok: #1f7a4d;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: Inter, -apple-system, 'Segoe UI', sans-serif; background: var(--paper); color: var(--ink); line-height: 1.45; }
+  a { color: inherit; }
+
+  header { background: var(--navy); color: #fff; padding: 28px 16px 26px; text-align: center; }
+  .mark { width: 92px; aspect-ratio: 1000 / 778; margin: 0 auto 14px; background: #fff; -webkit-mask: url(assets/logo-mask.png) center / contain no-repeat; mask: url(assets/logo-mask.png) center / contain no-repeat; }
+  header .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); }
+  header h1 { margin: 6px 0 8px; font-size: clamp(26px, 6vw, 38px); font-weight: 800; letter-spacing: -.01em; }
+  header p { margin: 0 auto; max-width: 560px; color: #c9d1dc; font-size: 15px; }
+
+  main { max-width: 1040px; margin: 0 auto; padding: 20px 16px 48px; display: grid; gap: 22px; }
+  @media (min-width: 860px) {
+    main { grid-template-columns: 1fr 1fr; align-items: start; padding-top: 28px; }
+    .preview { position: sticky; top: 20px; }
+  }
+  /* Phones: a smaller preview stays pinned at the top while you scroll through the choices. */
+  @media (max-width: 859px) {
+    .preview { position: sticky; top: 0; z-index: 2; padding: 8px; border-radius: 0 0 14px 14px; box-shadow: 0 6px 16px rgba(14,26,43,.08); }
+    .preview .stage { height: 34vh; width: 22.67vh; max-height: 340px; max-width: 227px; }
+    .preview .caption { margin-top: 6px; font-size: 13px; }
+    .preview .note { display: none; }
+  }
+
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; }
+  .preview { padding: 14px; }
+  .stage { position: relative; width: 100%; max-width: 420px; margin: 0 auto; aspect-ratio: 640 / 960; border-radius: 10px; overflow: hidden; background: #f2f2f2; }
+  .stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .2s; }
+  .print { position: absolute; aspect-ratio: 1000 / 778; transform: translateX(-50%); -webkit-mask: url(assets/logo-mask.png) center / contain no-repeat; mask: url(assets/logo-mask.png) center / contain no-repeat; background-size: 220px; opacity: .96; transition: background-color .2s; }
+  .caption { text-align: center; margin: 12px 0 2px; font-size: 14px; color: var(--muted); }
+  .caption strong { color: var(--ink); }
+  .note { text-align: center; font-size: 12px; color: var(--muted); margin: 4px 0 0; }
+
+  form { display: grid; gap: 14px; }
+  fieldset { border: 0; margin: 0; padding: 16px; }
+  legend { float: left; width: 100%; padding: 0; margin-bottom: 10px; font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+  legend .num { display: inline-grid; place-items: center; width: 22px; height: 22px; margin-right: 8px; border-radius: 50%; background: var(--navy); color: #fff; font-size: 12px; letter-spacing: 0; }
+  legend .picked { float: right; font-weight: 600; letter-spacing: 0; text-transform: none; color: var(--muted); font-size: 13px; }
+  fieldset > *:not(legend) { clear: both; }
+
+  input[type=text] { width: 100%; padding: 12px 14px; font: inherit; font-size: 16px; border: 1.5px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink); }
+  input[type=text]:focus { outline: none; border-color: var(--navy); }
+
+  .garments { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .garment { display: grid; gap: 2px; padding: 10px; text-align: left; font: inherit; background: #fff; border: 1.5px solid var(--line); border-radius: 12px; cursor: pointer; color: var(--ink); }
+  .garment img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: center 45%; border-radius: 8px; background: #f2f2f2; }
+  .garment .other-art { display: grid; place-items: center; width: 100%; aspect-ratio: 4 / 3; border-radius: 8px; background: #f2f2f2; font-size: 30px; font-weight: 800; color: var(--muted); }
+  .garment b { font-size: 15px; margin-top: 6px; }
+  .garment small { color: var(--muted); font-size: 12px; }
+  .garment[aria-pressed="true"] { border-color: var(--navy); box-shadow: 0 0 0 1.5px var(--navy); }
+  .bc-link { display: inline-block; margin-top: 10px; font-size: 13px; color: var(--muted); }
+
+  .swatches { display: flex; flex-wrap: wrap; gap: 8px; }
+  .sw { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(0,0,0,.18); background-size: cover; cursor: pointer; padding: 0; position: relative; }
+  .sw[aria-pressed="true"]::after { content: ""; position: absolute; inset: -5px; border: 2px solid var(--navy); border-radius: 50%; }
+  .sw:focus-visible, .garment:focus-visible, .size:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+  .sizes { display: flex; flex-wrap: wrap; gap: 8px; }
+  .size { min-width: 54px; padding: 10px 12px; font: inherit; font-weight: 700; background: #fff; border: 1.5px solid var(--line); border-radius: 10px; cursor: pointer; color: var(--ink); }
+  .size[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: #fff; }
+
+  .hidden { display: none !important; }
+  .submit { width: 100%; padding: 16px; font: inherit; font-size: 17px; font-weight: 800; color: #fff; background: var(--navy); border: 0; border-radius: 12px; cursor: pointer; }
+  .submit:disabled { opacity: .6; cursor: wait; }
+  .error { color: var(--error); font-weight: 600; font-size: 14px; margin: 0; min-height: 1em; }
+  .done { padding: 28px 20px; text-align: center; }
+  .done h2 { margin: 0 0 8px; font-size: 24px; }
+  .done p { margin: 0 auto 6px; max-width: 420px; color: var(--muted); }
+  .done button { margin-top: 14px; padding: 10px 16px; font: inherit; font-weight: 700; background: #fff; border: 1.5px solid var(--line); border-radius: 10px; cursor: pointer; }
+  footer { text-align: center; font-size: 12px; color: var(--muted); padding: 0 16px 32px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="mark" role="img" aria-label="Koda Iron View KX mountains logo"></div>
+  <div class="eyebrow">Koda CrossFit Iron View</div>
+  <h1>Happy 3 Year Kodaversary!</h1>
+  <p>Thank you for being part of Koda. Pick your anniversary gift: a hoodie, crewneck or long sleeve with the classic KX mountains logo on the chest, in the colors you like.</p>
+</header>
+
+<main>
+  <section class="card preview" aria-label="Preview">
+    <div class="stage">
+      <img id="garmentImg" alt="">
+      <div class="print" id="printLayer"></div>
+    </div>
+    <p class="caption" id="caption"></p>
+    <p class="note">Preview only. Final print size and placement may vary a little.</p>
+  </section>
+
+  <div>
+    <form id="form" class="card" novalidate>
+      <fieldset>
+        <legend><span class="num">1</span>Your name</legend>
+        <input type="text" id="name" autocomplete="name" maxlength="60" placeholder="First and last name">
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="num">2</span>Pick your garment</legend>
+        <div class="garments" id="garments"></div>
+        <div id="otherBox" class="hidden">
+          <input type="text" id="other" maxlength="200" placeholder="Other garment: style # and color" style="margin-top:12px">
+          <a class="bc-link" href="https://www.bellacanvas.com" target="_blank" rel="noopener">Browse BellaCanvas.com &rarr;</a>
+        </div>
+      </fieldset>
+
+      <fieldset id="colorSet">
+        <legend><span class="num">3</span>Garment color <span class="picked" id="colorName"></span></legend>
+        <div class="swatches" id="colors"></div>
+        <a class="bc-link" id="bcLink" target="_blank" rel="noopener">See this garment on BellaCanvas.com &rarr;</a>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="num" id="printNum">4</span>Print color <span class="picked" id="printName"></span></legend>
+        <div class="swatches" id="prints"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="num" id="sizeNum">5</span>Size</legend>
+        <div class="sizes" id="sizes"></div>
+      </fieldset>
+
+      <fieldset style="padding-top:0">
+        <p class="error" id="error" role="alert"></p>
+        <button class="submit" id="submit" type="submit">Send my pick</button>
+      </fieldset>
+    </form>
+
+    <div class="card done hidden" id="done" role="status">
+      <h2 id="doneTitle">Got it!</h2>
+      <p id="doneText"></p>
+      <p>Want to change something? Just send it again. We'll use your latest pick.</p>
+      <button type="button" id="again">Change my pick</button>
+    </div>
+  </div>
+</main>
+
+<footer>Koda CrossFit Iron View &middot; Questions? Ask any coach.</footer>
+
+<script src="colors.js"></script>
+<script>
+const API = 'https://script.google.com/macros/s/AKfycbwWjHrhE6k3vVPDXD4qi3VLxZVAXMykAFIKocoUiq0BtXdv2XLy7Oo0GRfrP48fHytnyw/exec';
+
+// Garment ids must match KODAVERSARY_GARMENTS in the backend (apps-script/Kodaversary.js in hyrox-simulation-signup).
+// print = where the chest logo sits on that garment's flat photo: center x %, top %, width % of the photo.
+const GARMENTS = [
+  { id: 'hoodie', name: 'Hoodie', style: 'Bella+Canvas 3719 Sponge Fleece', url: 'https://www.bellacanvas.com/product/3719/Unisex-Sponge-Fleece-Pullover-Hoodie.html', print: { x: 50, y: 45, w: 24 } },
+  { id: 'crewneck', name: 'Crewneck', style: 'Bella+Canvas 3945 Sponge Fleece', url: 'https://www.bellacanvas.com/product/3945/Unisex-Sponge-Fleece-Drop-Shoulder-Sweatshirt.html', print: { x: 50, y: 30, w: 27 } },
+  { id: 'longsleeve', name: 'Long Sleeve', style: 'Bella+Canvas 3501CVC Heather CVC', url: 'https://www.bellacanvas.com/product/3501CVC/Unisex-Heather-CVC-Long-Sleeve-Tee.html', print: { x: 50, y: 32, w: 25 } },
+  { id: 'other', name: 'Other', style: 'Any Bella+Canvas garment' },
+];
+// Same print colors as the Koda Fundraiser apparel order.
+const PRINTS = [
+  { name: 'White', hex: '#FFFFFF' }, { name: 'Black', hex: '#1A1A1A' }, { name: 'Silver', hex: '#C0C0C0' },
+  { name: 'Grey', hex: '#888B92' }, { name: 'Gold', hex: '#D4AF37' }, { name: 'Yellow', hex: '#FFD400' },
+  { name: 'Red', hex: '#D7263D' }, { name: 'Pink', hex: '#EC4899' }, { name: 'Navy', hex: '#0A2240' },
+  { name: 'Ocean', img: 'assets/ocean.jpg' }, { name: 'Teal', hex: '#1FB5A6' }, { name: 'Dark Teal', hex: '#0F5257' },
+  { name: 'Mint', hex: '#9CDDB8' }, { name: 'Pastel Baby Blue', hex: '#B6D8F2' }, { name: 'Pastel Lavender', hex: '#C9B6E4' },
+  { name: 'Snow Camo', img: 'assets/snow-camo.jpg' },
+];
+const SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+
+const $ = id => document.getElementById(id);
+const state = { garment: 'hoodie', color: { hoodie: 'Black', crewneck: 'Black', longsleeve: 'Solid Black Blend' }, print: 'White', size: '' };
+let previewGarment = 'hoodie'; // "Other" keeps showing the last real garment so the print colors still preview
+
+const garmentOf = id => GARMENTS.find(g => g.id === id);
+const colorOf = (gid, name) => GARMENT_COLORS[gid].find(c => c.name === name);
+// A swatch shows its texture image when there is one (heathers, Ocean, Snow Camo), else its flat color.
+const fill = (el, c) => { const img = c.sw || c.img; if (img) el.style.backgroundImage = `url(${img})`; else el.style.backgroundColor = c.hex; };
+
+function renderGarments() {
+  $('garments').replaceChildren(...GARMENTS.map(g => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'garment'; b.setAttribute('aria-pressed', String(state.garment === g.id));
+    if (g.id === 'other') { const a = document.createElement('div'); a.className = 'other-art'; a.textContent = '?'; b.append(a); }
+    else { const i = document.createElement('img'); i.alt = ''; i.loading = 'lazy'; i.src = colorOf(g.id, state.color[g.id]).img; b.append(i); }
+    const t = document.createElement('b'); t.textContent = g.name; const s = document.createElement('small'); s.textContent = g.style;
+    b.append(t, s);
+    b.onclick = () => { state.garment = g.id; if (g.id !== 'other') previewGarment = g.id; render(); };
+    return b;
+  }));
+}
+
+function renderColors() {
+  const g = state.garment;
+  $('colorSet').classList.toggle('hidden', g === 'other');
+  $('otherBox').classList.toggle('hidden', g !== 'other');
+  $('printNum').textContent = g === 'other' ? 3 : 4;
+  $('sizeNum').textContent = g === 'other' ? 4 : 5;
+  if (g === 'other') return;
+  $('colorName').textContent = state.color[g];
+  $('bcLink').href = garmentOf(g).url;
+  $('colors').replaceChildren(...GARMENT_COLORS[g].map(c => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'sw'; b.title = c.name; b.setAttribute('aria-label', c.name);
+    b.setAttribute('aria-pressed', String(state.color[g] === c.name));
+    fill(b, { hex: c.hex, sw: c.sw });
+    b.onclick = () => { state.color[g] = c.name; render(); };
+    return b;
+  }));
+}
+
+function renderPrints() {
+  $('printName').textContent = state.print;
+  $('prints').replaceChildren(...PRINTS.map(p => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'sw'; b.title = p.name; b.setAttribute('aria-label', p.name + ' print');
+    b.setAttribute('aria-pressed', String(state.print === p.name));
+    fill(b, p);
+    b.onclick = () => { state.print = p.name; render(); };
+    return b;
+  }));
+}
+
+function renderSizes() {
+  $('sizes').replaceChildren(...SIZES.map(s => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'size'; b.textContent = s; b.setAttribute('aria-pressed', String(state.size === s));
+    b.onclick = () => { state.size = s; render(); };
+    return b;
+  }));
+}
+
+function renderPreview() {
+  const g = garmentOf(previewGarment), c = colorOf(g.id, state.color[g.id]), p = PRINTS.find(x => x.name === state.print);
+  $('garmentImg').src = c.img;
+  $('garmentImg').alt = `${g.name} in ${c.name}`;
+  const layer = $('printLayer');
+  Object.assign(layer.style, { left: g.print.x + '%', top: g.print.y + '%', width: g.print.w + '%', backgroundColor: p.hex || 'transparent', backgroundImage: p.img ? `url(${p.img})` : 'none' });
+  $('caption').innerHTML = '';
+  const strong = t => { const s = document.createElement('strong'); s.textContent = t; return s; };
+  if (state.garment === 'other') $('caption').append('Your own Bella+Canvas pick with a ', strong(state.print), ' logo');
+  else $('caption').append(strong(g.name), ' in ', strong(c.name), ' with a ', strong(state.print), ' logo');
+}
+
+function render() { renderGarments(); renderColors(); renderPrints(); renderSizes(); renderPreview(); $('error').textContent = ''; }
+
+$('form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const name = $('name').value.trim(), other = $('other').value.trim(), g = state.garment;
+  const err = !name ? 'Please enter your name.' : g === 'other' && !other ? 'Tell us which garment you\'d like.' : !state.size ? 'Please pick a size.' : '';
+  if (err) { $('error').textContent = err; return; }
+  const body = { type: 'kodaversary', name, garment: g, color: g === 'other' ? '' : state.color[g], print: state.print, size: state.size, other: g === 'other' ? other : '' };
+  $('submit').disabled = true; $('submit').textContent = 'Sending…'; $('error').textContent = '';
+  try {
+    const r = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) });
+    const j = await r.json();
+    if (j.status !== 'ok') throw new Error(j.error || 'Something went wrong.');
+    $('doneTitle').textContent = `Got it, ${name.split(/\s+/)[0]}!`;
+    $('doneText').textContent = g === 'other'
+      ? `We'll order your ${other} in ${state.size} with a ${state.print} logo, and let you know when it's on the anniversary gift shelf.`
+      : `We'll order your ${garmentOf(g).name.toLowerCase()} in ${state.color[g]} (${state.size}) with a ${state.print} logo, and let you know when it's on the anniversary gift shelf.`;
+    $('form').classList.add('hidden'); $('done').classList.remove('hidden');
+    $('done').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } catch (x) {
+    $('error').textContent = (x && x.message && !/fetch|network/i.test(x.message)) ? x.message : 'That didn\'t go through. Check your connection and try again.';
+  } finally {
+    $('submit').disabled = false; $('submit').textContent = 'Send my pick';
+  }
+});
+$('again').onclick = () => { $('done').classList.add('hidden'); $('form').classList.remove('hidden'); };
+
+render();
+</script>
+</body>
+</html>
