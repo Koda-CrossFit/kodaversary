@@ -39,7 +39,7 @@ The anniversaries dashboard reads this tab along with the form's tab (`~/.claude
 - `colors.js`: the garment colors (name, hex, photo, swatch), generated from bellacanvas.com.
 - `assets/<garment>/<color>.jpg`: one flat front photo per color. `sw-*.jpg` files are Bella's heather swatch chips.
 - `assets/logo-mask.png`: the KX mountains + KODA IRON VIEW logo as a white, transparent image. The page tints it with CSS masks, so preview it over http (not file://).
-- `assets/ocean.jpg`, `assets/snow-camo.jpg`: the two patterned print colors.
+- Print colors are the `PRINTS` list in `index.html` (Kevin's list as of 11/18/2026). Silver and Gold carry a `metal` gradient so their swatch and logo preview look shiny.
 
 ## Refreshing colors and photos (if Bella+Canvas adds or drops colors)
 

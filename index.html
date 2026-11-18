@@ -166,15 +166,21 @@ const GARMENTS = [
   { id: 'longsleeve', name: 'Long Sleeve', style: 'Bella+Canvas 3501CVC Heather CVC', url: 'https://www.bellacanvas.com/product/3501CVC/Unisex-Heather-CVC-Long-Sleeve-Tee.html', print: { x: 50, y: 32, w: 25 } },
   { id: 'other', name: 'Other', style: 'Any Bella+Canvas garment' },
 ];
-// Same print colors as the Koda Fundraiser apparel order.
+// Print (vinyl) colors. Started from the Koda Fundraiser order; Kevin 11/18/2026 dropped Yellow, Teal, Ocean and
+// Snow Camo, added Lime Green, Pale Yellow, Hunter Orange and Mocha Brown, and put Silver and Gold side by side
+// with a shiny metallic look (`metal` = the gradient used on the swatch and the logo preview).
 const PRINTS = [
-  { name: 'White', hex: '#FFFFFF' }, { name: 'Black', hex: '#1A1A1A' }, { name: 'Silver', hex: '#C0C0C0' },
-  { name: 'Grey', hex: '#888B92' }, { name: 'Gold', hex: '#D4AF37' }, { name: 'Yellow', hex: '#FFD400' },
-  { name: 'Red', hex: '#D7263D' }, { name: 'Pink', hex: '#EC4899' }, { name: 'Navy', hex: '#0A2240' },
-  { name: 'Ocean', img: 'assets/ocean.jpg' }, { name: 'Teal', hex: '#1FB5A6' }, { name: 'Dark Teal', hex: '#0F5257' },
-  { name: 'Mint', hex: '#9CDDB8' }, { name: 'Pastel Baby Blue', hex: '#B6D8F2' }, { name: 'Pastel Lavender', hex: '#C9B6E4' },
-  { name: 'Snow Camo', img: 'assets/snow-camo.jpg' },
+  { name: 'White', hex: '#FFFFFF' }, { name: 'Black', hex: '#1A1A1A' }, { name: 'Grey', hex: '#888B92' },
+  { name: 'Mocha Brown', hex: '#7A5440' },
+  { name: 'Silver', hex: '#C0C0C0', metal: 'linear-gradient(135deg, #8e9196 0%, #f4f5f7 28%, #a9adb3 50%, #eceef1 72%, #7f8388 100%)' },
+  { name: 'Gold', hex: '#D4AF37', metal: 'linear-gradient(135deg, #8a6514 0%, #f6e3a1 28%, #c49a2c 50%, #f1d27a 72%, #7c5a12 100%)' },
+  { name: 'Pale Yellow', hex: '#F7E48A' }, { name: 'Hunter Orange', hex: '#FF5F15' },
+  { name: 'Red', hex: '#D7263D' }, { name: 'Pink', hex: '#EC4899' },
+  { name: 'Lime Green', hex: '#8CC63F' }, { name: 'Mint', hex: '#9CDDB8' }, { name: 'Dark Teal', hex: '#0F5257' },
+  { name: 'Navy', hex: '#0A2240' }, { name: 'Pastel Baby Blue', hex: '#B6D8F2' }, { name: 'Pastel Lavender', hex: '#C9B6E4' },
 ];
+// The light glint on a metallic swatch.
+const SHINE = 'radial-gradient(circle at 32% 26%, rgba(255,255,255,.95) 0 6%, rgba(255,255,255,0) 28%)';
 const SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
 const $ = id => document.getElementById(id);
@@ -183,8 +189,14 @@ let previewGarment = 'hoodie'; // "Other" keeps showing the last real garment so
 
 const garmentOf = id => GARMENTS.find(g => g.id === id);
 const colorOf = (gid, name) => GARMENT_COLORS[gid].find(c => c.name === name);
-// A swatch shows its texture image when there is one (heathers, Ocean, Snow Camo), else its flat color.
-const fill = (el, c) => { const img = c.sw || c.img; if (img) el.style.backgroundImage = `url(${img})`; else el.style.backgroundColor = c.hex; };
+// A swatch shows its texture image when there is one (heathers), a shiny gradient for Silver and Gold, else its
+// flat color.
+const fill = (el, c) => {
+  const img = c.sw || c.img;
+  if (c.metal) el.style.backgroundImage = `${SHINE}, ${c.metal}`;
+  else if (img) el.style.backgroundImage = `url(${img})`;
+  else el.style.backgroundColor = c.hex;
+};
 
 function renderGarments() {
   $('garments').replaceChildren(...GARMENTS.map(g => {
@@ -244,7 +256,8 @@ function renderPreview() {
   $('garmentImg').src = c.img;
   $('garmentImg').alt = `${g.name} in ${c.name}`;
   const layer = $('printLayer');
-  Object.assign(layer.style, { left: g.print.x + '%', top: g.print.y + '%', width: g.print.w + '%', backgroundColor: p.hex || 'transparent', backgroundImage: p.img ? `url(${p.img})` : 'none' });
+  Object.assign(layer.style, { left: g.print.x + '%', top: g.print.y + '%', width: g.print.w + '%', backgroundColor: p.hex || 'transparent',
+    backgroundImage: p.metal || (p.img ? `url(${p.img})` : 'none'), backgroundSize: p.metal ? '100% 100%' : '' });
   $('caption').innerHTML = '';
   const strong = t => { const s = document.createElement('strong'); s.textContent = t; return s; };
   if (state.garment === 'other') $('caption').append('Your own Bella+Canvas pick with a ', strong(state.print), ' logo');
