@@ -53,6 +53,9 @@
   legend { float: left; width: 100%; padding: 0; margin-bottom: 10px; font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
   legend .num { display: inline-grid; place-items: center; width: 22px; height: 22px; margin-right: 8px; border-radius: 50%; background: var(--navy); color: #fff; font-size: 12px; letter-spacing: 0; }
   legend .picked { float: right; font-weight: 600; letter-spacing: 0; text-transform: none; color: var(--muted); font-size: 13px; }
+  legend .picked.todo { font-style: italic; }
+  /* After a send attempt, a step that still needs a choice turns red. */
+  fieldset.missing legend, fieldset.missing legend .picked { color: var(--error); }
   fieldset > *:not(legend) { clear: both; }
 
   input[type=text] { width: 100%; padding: 12px 14px; font: inherit; font-size: 16px; border: 1.5px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink); }
@@ -127,12 +130,12 @@
         <a class="bc-link" id="bcLink" target="_blank" rel="noopener">See this garment on BellaCanvas.com &rarr;</a>
       </fieldset>
 
-      <fieldset>
+      <fieldset id="printSet">
         <legend><span class="num" id="printNum">4</span>Print color <span class="picked" id="printName"></span></legend>
         <div class="swatches" id="prints"></div>
       </fieldset>
 
-      <fieldset>
+      <fieldset id="sizeSet">
         <legend><span class="num" id="sizeNum">5</span>Size</legend>
         <div class="sizes" id="sizes"></div>
       </fieldset>
@@ -184,11 +187,17 @@ const SHINE = 'radial-gradient(circle at 32% 26%, rgba(255,255,255,.95) 0 6%, rg
 const SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
 const $ = id => document.getElementById(id);
-const state = { garment: 'hoodie', color: { hoodie: 'Black', crewneck: 'Black', longsleeve: 'Solid Black Blend' }, print: 'White', size: '' };
+// Nothing is pre-picked: members must choose a garment color and a print color (Kevin 11/18/2026). Until they do,
+// the photos show SHOWN and the logo is a grey placeholder.
+const SHOWN = { hoodie: 'Black', crewneck: 'Black', longsleeve: 'Solid Black Blend' };
+const state = { garment: 'hoodie', color: { hoodie: '', crewneck: '', longsleeve: '' }, print: '', size: '' };
 let previewGarment = 'hoodie'; // "Other" keeps showing the last real garment so the print colors still preview
+let tried = false; // after a send attempt, steps still missing a choice are flagged
 
 const garmentOf = id => GARMENTS.find(g => g.id === id);
 const colorOf = (gid, name) => GARMENT_COLORS[gid].find(c => c.name === name);
+const shownColor = gid => colorOf(gid, state.color[gid] || SHOWN[gid]);
+const setPicked = (el, v) => { el.textContent = v || 'Pick one'; el.classList.toggle('todo', !v); };
 // A swatch shows its texture image when there is one (heathers), a shiny gradient for Silver and Gold, else its
 // flat color.
 const fill = (el, c) => {
@@ -203,7 +212,7 @@ function renderGarments() {
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'garment'; b.setAttribute('aria-pressed', String(state.garment === g.id));
     if (g.id === 'other') { const a = document.createElement('div'); a.className = 'other-art'; a.textContent = '?'; b.append(a); }
-    else { const i = document.createElement('img'); i.alt = ''; i.loading = 'lazy'; i.src = colorOf(g.id, state.color[g.id]).img; b.append(i); }
+    else { const i = document.createElement('img'); i.alt = ''; i.loading = 'lazy'; i.src = shownColor(g.id).img; b.append(i); }
     const t = document.createElement('b'); t.textContent = g.name; const s = document.createElement('small'); s.textContent = g.style;
     b.append(t, s);
     b.onclick = () => { state.garment = g.id; if (g.id !== 'other') previewGarment = g.id; render(); };
@@ -217,8 +226,11 @@ function renderColors() {
   $('otherBox').classList.toggle('hidden', g !== 'other');
   $('printNum').textContent = g === 'other' ? 3 : 4;
   $('sizeNum').textContent = g === 'other' ? 4 : 5;
+  $('colorSet').classList.toggle('missing', tried && g !== 'other' && !state.color[g]);
+  $('printSet').classList.toggle('missing', tried && !state.print);
+  $('sizeSet').classList.toggle('missing', tried && !state.size);
   if (g === 'other') return;
-  $('colorName').textContent = state.color[g];
+  setPicked($('colorName'), state.color[g]);
   $('bcLink').href = garmentOf(g).url;
   $('colors').replaceChildren(...GARMENT_COLORS[g].map(c => {
     const b = document.createElement('button');
@@ -231,7 +243,7 @@ function renderColors() {
 }
 
 function renderPrints() {
-  $('printName').textContent = state.print;
+  setPicked($('printName'), state.print);
   $('prints').replaceChildren(...PRINTS.map(p => {
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'sw'; b.title = p.name; b.setAttribute('aria-label', p.name + ' print');
@@ -252,16 +264,19 @@ function renderSizes() {
 }
 
 function renderPreview() {
-  const g = garmentOf(previewGarment), c = colorOf(g.id, state.color[g.id]), p = PRINTS.find(x => x.name === state.print);
+  const g = garmentOf(previewGarment), c = shownColor(g.id), p = PRINTS.find(x => x.name === state.print);
   $('garmentImg').src = c.img;
   $('garmentImg').alt = `${g.name} in ${c.name}`;
   const layer = $('printLayer');
-  Object.assign(layer.style, { left: g.print.x + '%', top: g.print.y + '%', width: g.print.w + '%', backgroundColor: p.hex || 'transparent',
-    backgroundImage: p.metal || (p.img ? `url(${p.img})` : 'none'), backgroundSize: p.metal ? '100% 100%' : '' });
+  Object.assign(layer.style, { left: g.print.x + '%', top: g.print.y + '%', width: g.print.w + '%',
+    backgroundColor: p ? p.hex : 'rgba(150,155,162,.55)', // grey placeholder until a print color is picked
+    backgroundImage: p && p.metal ? p.metal : 'none', backgroundSize: p && p.metal ? '100% 100%' : '' });
   $('caption').innerHTML = '';
   const strong = t => { const s = document.createElement('strong'); s.textContent = t; return s; };
-  if (state.garment === 'other') $('caption').append('Your own Bella+Canvas pick with a ', strong(state.print), ' logo');
-  else $('caption').append(strong(g.name), ' in ', strong(c.name), ' with a ', strong(state.print), ' logo');
+  const missing = [state.garment !== 'other' && !state.color[g.id] && 'garment color', !p && 'print color'].filter(Boolean);
+  if (missing.length) $('caption').append('Pick a ', strong(missing.join(' and ')), ' to see your preview');
+  else if (state.garment === 'other') $('caption').append('Your own Bella+Canvas pick with a ', strong(p.name), ' logo');
+  else $('caption').append(strong(g.name), ' in ', strong(c.name), ' with a ', strong(p.name), ' logo');
 }
 
 function render() { renderGarments(); renderColors(); renderPrints(); renderSizes(); renderPreview(); $('error').textContent = ''; }
@@ -269,8 +284,21 @@ function render() { renderGarments(); renderColors(); renderPrints(); renderSize
 $('form').addEventListener('submit', async e => {
   e.preventDefault();
   const name = $('name').value.trim(), other = $('other').value.trim(), g = state.garment;
-  const err = !name ? 'Please enter your name.' : g === 'other' && !other ? 'Tell us which garment you\'d like.' : !state.size ? 'Please pick a size.' : '';
-  if (err) { $('error').textContent = err; return; }
+  // [message, where to scroll] for the first thing still missing.
+  const [err, at] = !name ? ['Please enter your name.', 'name']
+    : g === 'other' && !other ? ['Tell us which garment you\'d like.', 'other']
+    : g !== 'other' && !state.color[g] ? [`Please pick a ${garmentOf(g).name.toLowerCase()} color.`, 'colorSet']
+    : !state.print ? ['Please pick a print color.', 'printSet']
+    : !state.size ? ['Please pick a size.', 'sizeSet'] : ['', ''];
+  if (err) {
+    tried = true; render(); $('error').textContent = err;
+    // Scroll the step to just below the preview, which stays pinned over the top of the screen on phones.
+    const cover = matchMedia('(max-width: 859px)').matches ? document.querySelector('.preview').getBoundingClientRect().height : 0;
+    const step = $(at).closest('fieldset') || $(at);
+    window.scrollTo({ top: step.getBoundingClientRect().top + scrollY - cover - 8, behavior: 'smooth' });
+    if (at === 'name' || at === 'other') $(at).focus({ preventScroll: true });
+    return;
+  }
   const body = { type: 'kodaversary', name, garment: g, color: g === 'other' ? '' : state.color[g], print: state.print, size: state.size, other: g === 'other' ? other : '' };
   $('submit').disabled = true; $('submit').textContent = 'Sending…'; $('error').textContent = '';
   try {
