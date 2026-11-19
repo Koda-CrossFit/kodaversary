@@ -90,7 +90,10 @@
   footer { text-align: center; font-size: 12px; color: var(--muted); padding: 0 16px 32px; }
 
   /* 1st / 2nd / 3rd choice (Kevin 11/18/2026: Bella+Canvas runs out of some colors and sizes). */
-  .stock-note { margin: 0 0 12px; padding: 10px 12px; font-size: 14px; background: #fbf6ec; border: 1px solid #ecdcbc; border-radius: 10px; }
+  /* Kevin 11/19/2026: bigger and more prominent so nobody misses why there are 3 picks. */
+  .stock-note { display: flex; gap: 12px; align-items: flex-start; margin: 0 0 14px; padding: 14px 16px; font-size: 16px; line-height: 1.45; background: #fdf1d8; border: 2px solid var(--accent); border-radius: 12px; box-shadow: 0 4px 14px rgba(196,164,107,.25); }
+  .stock-note .ic { flex: none; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--navy); color: #fff; font-size: 19px; font-weight: 900; }
+  .stock-note strong { display: block; margin-bottom: 4px; font-size: 20px; font-weight: 800; color: var(--navy); }
   .tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
   .tab { display: grid; gap: 1px; min-width: 0; padding: 8px 6px; font: inherit; text-align: center; background: #fff; border: 1.5px solid var(--line); border-radius: 10px; cursor: pointer; color: var(--ink); }
   .tab b { font-size: 14px; }
@@ -137,7 +140,7 @@
 
       <fieldset id="choiceSet">
         <legend><span class="num">2</span>Your top 3 picks</legend>
-        <p class="stock-note"><strong>Why 3 picks?</strong> Bella+Canvas sometimes has certain colors and sizes out of stock. We'll order your 1st choice. Your 2nd and 3rd choices are only backups in case it's out of stock.</p>
+        <div class="stock-note" role="note"><span class="ic" aria-hidden="true">!</span><div><strong>Why 3 picks?</strong>Bella+Canvas sometimes has certain colors and sizes out of stock. We'll order your <b>1st choice</b>. Your 2nd and 3rd choices are only backups in case it's out of stock.</div></div>
         <div class="tabs" id="tabs" role="tablist" aria-label="Your 1st, 2nd and 3rd choice"></div>
       </fieldset>
 
